@@ -7,12 +7,14 @@ var protagonist = require("protagonist")
 var _writeWarnings = function( type, result, text ) {
   result.warnings.forEach(function(warning) {
     warning.location.forEach(function(location) {
-      logger[type](
-        "mimosa-protagonist: " +
-        warning.message +
-        " - line:" +
-        text.substr(0, location.index).split("\n").length
-      );
+      var message = "mimosa-protagonist: " + warning.message + " - line:" +
+              text.substr(0, location.index).split("\n").length
+
+      if (type === "error") {
+        logger[type](message, { exitIfBuild: true });
+      } else {
+        logger[type](message);
+      }
     });
   });
 };
